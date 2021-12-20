@@ -18,15 +18,24 @@ function MyApp({ Component, pageProps }) {
   const [pageLoading, setPageLoading] = useState(false)
   const [connected, setConnected] = useState(false)
   const [signerAddress, setSignerAddress] = useState("")
-  const [id, setID] = useState(30)
+
+  const [id, setID] = useState(1)
+  const [description, setDesciption] = useState("")
+  const [sn, setSN] = useState("")
+  const [image, setImage] = useState("")
+  const [totalNFT, setTotalNFT] = useState(0)
 
   const incId = () => {
-    setID(parseInt(id) + 1)
+    if (id < totalNFT) {
+      setID(parseInt(id) + 1)
+      getNFT(parseInt(id) + 1)
+    }
   }
 
   const decId = () => {
-    if (id > 0) {
+    if (id > 1) {
       setID(parseInt(id) - 1)
+      getNFT(parseInt(id) - 1)
     }
   }
 
@@ -51,6 +60,34 @@ function MyApp({ Component, pageProps }) {
       }
     });
   }
+  const checkContract = async () => {
+    web3 = new Web3(provider)
+    provider = new ethers.providers.Web3Provider(provider);
+    signer = provider.getSigner();
+    contract = new ethers.Contract(
+      SMARTCONTRACT_ADDRESS,
+      SMARTCONTRACT_ABI,
+      signer
+    );
+    getNFT(id)
+  }
+
+  const getNFT = async (id) => {
+    setPageLoading(true)
+    const uri = await contract.tokenURI(id)
+    const total = await contract.totalSupply()
+    setTotalNFT(total.toString())
+    await fetch(uri)
+      .then(resp =>
+        resp.json()
+      ).then((json) => {
+        setDesciption(json.description)
+        setSN(json.sn)
+        setImage(json.image)
+      })
+    setPageLoading(false)
+  }
+
   useEffect(() => {
     ethereum.on('accountsChanged', function (accounts) {
       if (accounts.length !== 0) {
@@ -68,25 +105,6 @@ function MyApp({ Component, pageProps }) {
     // eslint-disable-next-line
   }, [])
 
-  const checkContract = async () => {
-    setPageLoading(true)
-    web3 = new Web3(provider)
-    provider = new ethers.providers.Web3Provider(provider);
-    signer = provider.getSigner();
-    contract = new ethers.Contract(
-      SMARTCONTRACT_ADDRESS,
-      SMARTCONTRACT_ABI,
-      signer
-    );
-    console.log(contract)
-    // getNFT()
-    setPageLoading(false)
-  }
-
-  const getNFT = async () => {
-    const uri = await contract.tokenURI("2")
-    console.log(uri)
-  }
   return (
     <>
       <Header
@@ -100,6 +118,10 @@ function MyApp({ Component, pageProps }) {
         getNFT={getNFT}
         setNewID={(e) => setID(e)}
         id={id}
+        description={description}
+        sn={sn}
+        totalNFT={totalNFT}
+        image={image}
       />
       <ToastContainer style={{ fontSize: 14, padding: '5px !important', lineHeight: '15px' }} />
       <Loading loading={pageLoading} />

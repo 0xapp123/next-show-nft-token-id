@@ -9,6 +9,8 @@ export default function Home({
   id,
   getNFT,
   setNewID,
+  totalNFT,
+  image,
   ...props
 }) {
   return (
@@ -24,8 +26,11 @@ export default function Home({
         incId={incId}
         decId={decId}
         id={id}
+        image={image}
+        totalNFT={totalNFT}
         getNFT={getNFT}
         setNewID={setNewID}
+        description={description}
       />
     </>
   )
