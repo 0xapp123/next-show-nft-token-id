@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import '../styles/globals.css'
 import '../styles/style.scss'
 import Web3Modal from "web3modal"
 import { ToastContainer } from 'react-toastify'
