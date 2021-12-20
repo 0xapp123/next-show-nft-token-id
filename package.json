@@ -1,5 +1,5 @@
 {
-  "name": "game-of-risk",
+  "name": "show-nft-by-id",
   "private": true,
   "scripts": {
     "dev": "next dev",
