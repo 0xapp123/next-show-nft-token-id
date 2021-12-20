@@ -30,7 +30,6 @@ export default function Home({
         totalNFT={totalNFT}
         getNFT={getNFT}
         setNewID={setNewID}
-        description={description}
       />
     </>
   )
