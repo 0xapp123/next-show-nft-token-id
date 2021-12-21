@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }) {
   const [image, setImage] = useState("")
   const [totalNFT, setTotalNFT] = useState(0)
   const [title, setTitle] = useState("")
-
+  const [allData, setAllData] = useState([])
   const incId = () => {
     if (id < totalNFT) {
       setID(parseInt(id) + 1)
@@ -36,27 +36,29 @@ function MyApp({ Component, pageProps }) {
     await getNFT(id)
   }
 
-  const getNFT = async (id) => {
-    // setPageLoading(true)
+  const getNFT = async () => {
+    setPageLoading(true)
     const provider = new Web3.providers.HttpProvider(INFURA_KEY);
     web3 = new Web3(provider)
     contract = new web3.eth.Contract(
       SMARTCONTRACT_ABI,
       SMARTCONTRACT_ADDRESS,
     )
-    const uri = await contract.methods.tokenURI(id).call()
     const total = await contract.methods.totalSupply().call()
+    let data = []
+    for (var i = 1; i <= total; i++) {
+      const uri = await contract.methods.tokenURI(i).call()
+      await fetch(uri)
+        .then(resp =>
+          resp.json()
+        ).then((json) => {
+          data.push(json)
+        })
+    }
+    setAllData(data)
     setTotalNFT(total.toString())
-    await fetch(uri)
-      .then(resp =>
-        resp.json()
-      ).then((json) => {
-        setTitle(json.title)
-        setDesciption(json.description)
-        setSN(json.sn)
-        setImage(json.image)
-      })
-    // setPageLoading(false)
+
+    setPageLoading(false)
   }
 
   useEffect(() => {
@@ -77,6 +79,7 @@ function MyApp({ Component, pageProps }) {
         sn={sn}
         totalNFT={totalNFT}
         image={image}
+        allData={allData}
       />
       <ToastContainer style={{ fontSize: 14, padding: '5px !important', lineHeight: '15px' }} />
       <Loading loading={pageLoading} />

@@ -11,6 +11,7 @@ export default function Home({
   setNewID,
   totalNFT,
   image,
+  allData,
   ...props
 }) {
   return (
@@ -28,6 +29,7 @@ export default function Home({
         id={id}
         image={image}
         totalNFT={totalNFT}
+        allData={allData}
         getNFT={getNFT}
         setNewID={setNewID}
       />
