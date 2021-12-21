@@ -73,19 +73,6 @@ export const SMARTCONTRACT_ABI = [
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "metadataURI",
-                "type": "string"
-            }
-        ],
-        "name": "mint",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "anonymous": false,
         "inputs": [
             {
@@ -165,23 +152,13 @@ export const SMARTCONTRACT_ABI = [
     {
         "inputs": [
             {
-                "internalType": "string[]",
-                "name": "dataURIs",
-                "type": "string[]"
-            },
-            {
                 "internalType": "uint256",
-                "name": "year",
+                "name": "start",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "month",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "day",
+                "name": "end",
                 "type": "uint256"
             }
         ],
@@ -217,24 +194,6 @@ export const SMARTCONTRACT_ABI = [
             }
         ],
         "name": "setApprovalForAll",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "_newTokenURI",
-                "type": "string"
-            }
-        ],
-        "name": "setTokenURI",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -322,40 +281,6 @@ export const SMARTCONTRACT_ABI = [
             }
         ],
         "name": "balanceOf",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "dateToId",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -562,4 +487,5 @@ export const SMARTCONTRACT_ABI = [
         "type": "function"
     }
 ]
-export const SMARTCONTRACT_ADDRESS = "0x7d36Cb089f800cFD7faD5E9E06B851f914C1A633"
+export const SMARTCONTRACT_ADDRESS = "0x038dC89056B64553cab939d5B478e7F62C017556"
+export const INFURA_KEY = "https://rinkeby.infura.io/v3/39a6a7f03e40421385b6afa9f95314bc"

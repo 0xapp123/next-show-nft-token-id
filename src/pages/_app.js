@@ -1,29 +1,22 @@
 import { useEffect, useState } from 'react'
 import '../styles/style.scss'
-import Web3Modal from "web3modal"
 import Web3 from 'web3'
 import { ToastContainer } from 'react-toastify'
 import Loading from '../components/Loading'
-import Header from '../components/Header'
-import { SMARTCONTRACT_ABI, SMARTCONTRACT_ADDRESS } from '../../config'
-import { ethers } from 'ethers'
+import { INFURA_KEY, SMARTCONTRACT_ABI, SMARTCONTRACT_ADDRESS } from '../../config'
 
-let provider = undefined
 let web3 = undefined
-let web3Modal = undefined
 let contract = undefined
-let signer = undefined
 
 function MyApp({ Component, pageProps }) {
   const [pageLoading, setPageLoading] = useState(false)
-  const [connected, setConnected] = useState(false)
-  const [signerAddress, setSignerAddress] = useState("")
 
   const [id, setID] = useState(1)
   const [description, setDesciption] = useState("")
   const [sn, setSN] = useState("")
   const [image, setImage] = useState("")
   const [totalNFT, setTotalNFT] = useState(0)
+  const [title, setTitle] = useState("")
 
   const incId = () => {
     if (id < totalNFT) {
@@ -39,85 +32,43 @@ function MyApp({ Component, pageProps }) {
     }
   }
 
-  const connectWallet = async () => {
-    const providerOptions = {
-      /* See Provider Options Section */
-    }
-    web3Modal = new Web3Modal({
-      network: "mainnet", // optional
-      cacheProvider: true, // optional
-      providerOptions // required
-    })
-    provider = await web3Modal.connect()
-    checkContract()
-    provider.on("accountsChanged", (accounts) => {
-      console.log(accounts)
-      if (accounts.length === 0) {
-        setConnected(false)
-      } else {
-        setConnected(true)
-        setSignerAddress(accounts[0])
-      }
-    });
-  }
-  const checkContract = async () => {
-    web3 = new Web3(provider)
-    provider = new ethers.providers.Web3Provider(provider);
-    signer = provider.getSigner();
-    contract = new ethers.Contract(
-      SMARTCONTRACT_ADDRESS,
-      SMARTCONTRACT_ABI,
-      signer
-    );
-    getNFT(id)
-  }
-
   const getNFT = async (id) => {
-    setPageLoading(true)
-    const uri = await contract.tokenURI(id)
-    const total = await contract.totalSupply()
+    // setPageLoading(true)
+    const provider = new Web3.providers.HttpProvider(INFURA_KEY);
+    web3 = new Web3(provider)
+    contract = new web3.eth.Contract(
+      SMARTCONTRACT_ABI,
+      SMARTCONTRACT_ADDRESS,
+    )
+    const uri = await contract.methods.tokenURI(id).call()
+    const total = await contract.methods.totalSupply().call()
     setTotalNFT(total.toString())
     await fetch(uri)
       .then(resp =>
         resp.json()
       ).then((json) => {
+        setTitle(json.title)
         setDesciption(json.description)
         setSN(json.sn)
         setImage(json.image)
       })
-    setPageLoading(false)
+    // setPageLoading(false)
   }
 
   useEffect(() => {
-    ethereum.on('accountsChanged', function (accounts) {
-      if (accounts.length !== 0) {
-        setSignerAddress(accounts[0])
-        setConnected(true)
-      } else {
-        setConnected(false)
-      }
-    });
-    if (ethereum.selectedAddress !== null) {
-      setConnected(true)
-      setSignerAddress(ethereum.selectedAddress)
-    }
-    connectWallet()
+    getNFT()
     // eslint-disable-next-line
   }, [])
 
   return (
     <>
-      <Header
-        signerAddress={signerAddress}
-        connectWallet={connectWallet}
-        connected={connected}
-      />
       <Component {...pageProps}
         incId={incId}
         decId={decId}
         getNFT={getNFT}
         setNewID={(e) => setID(e)}
         id={id}
+        title={title}
         description={description}
         sn={sn}
         totalNFT={totalNFT}
