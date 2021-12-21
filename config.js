@@ -487,5 +487,5 @@ export const SMARTCONTRACT_ABI = [
         "type": "function"
     }
 ]
-export const SMARTCONTRACT_ADDRESS = "0x038dC89056B64553cab939d5B478e7F62C017556"
+export const SMARTCONTRACT_ADDRESS = "0x72dC11c41b100fD4466eD6aAd171CBfa253A9f72"
 export const INFURA_KEY = "https://rinkeby.infura.io/v3/39a6a7f03e40421385b6afa9f95314bc"
