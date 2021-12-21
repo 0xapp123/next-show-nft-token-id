@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import { DoActionButton } from "../styleHook"
+// import { DoActionButton } from "../styleHook"
 
 export default function HomePage({
   description,
@@ -14,12 +14,11 @@ export default function HomePage({
   totalNFT,
   ...props
 }) {
-  console.log(allData)
-  const onChange = (e) => {
-    console.log("getNFT")
-    setNewID(e.target.value)
-    getNFT(e.target.value)
-  }
+  // const onChange = (e) => {
+  //   console.log("getNFT")
+  //   setNewID(e.target.value)
+  //   getNFT(e.target.value)
+  // }
   return (
     <Container>
       <div className="page-title">
