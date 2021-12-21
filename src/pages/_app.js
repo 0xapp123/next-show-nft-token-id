@@ -32,6 +32,10 @@ function MyApp({ Component, pageProps }) {
     }
   }
 
+  const checkContract = async () => {
+    await getNFT(id)
+  }
+
   const getNFT = async (id) => {
     // setPageLoading(true)
     const provider = new Web3.providers.HttpProvider(INFURA_KEY);
@@ -56,7 +60,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    getNFT()
+    checkContract()
     // eslint-disable-next-line
   }, [])
 
