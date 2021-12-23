@@ -44,20 +44,25 @@ function MyApp({ Component, pageProps }) {
       SMARTCONTRACT_ABI,
       SMARTCONTRACT_ADDRESS,
     )
+    setPageLoading(false)
     const total = await contract.methods.totalSupply().call()
+    console.log(contract)
     let data = []
-    for (var i = 1; i <= total; i++) {
-      const uri = await contract.methods.tokenURI(i).call()
-      await fetch(uri)
-        .then(resp =>
-          resp.json()
-        ).then((json) => {
-          data.push(json)
-        })
+    if (total !== 0) {
+      for (var i = 1; i <= total; i++) {
+        const uri = await contract.methods.tokenURI(i).call()
+        await fetch(uri)
+          .then(resp =>
+            resp.json()
+          ).then((json) => {
+            data.push(json)
+          })
+      }
+    } else {
+      setPageLoading(false)
     }
     setAllData(data)
     setTotalNFT(total.toString())
-
     setPageLoading(false)
   }
 
